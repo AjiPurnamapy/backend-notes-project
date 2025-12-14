@@ -17,7 +17,7 @@ def create_notes(
     session: Session = Depends(get_session),
     current_user : User = Depends(get_current_user),
 ):
-    note.owner_id = current_user.id
+    note.owner_id = current_user.id  # membuat paksa owner_id disamakan dengan user_id saat ini
     
     session.add(note)
     session.commit()
