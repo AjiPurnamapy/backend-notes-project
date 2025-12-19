@@ -1,5 +1,5 @@
 from typing import List, Optional
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, Depends, HTTPException
 from sqlmodel import Session, select
 from schemas.notes import ReadNotes, CreateNotes
 from database import get_session
@@ -17,8 +17,10 @@ def create_notes(
     session: Session = Depends(get_session),
     current_user : User = Depends(get_current_user),
 ):
-    notes_db = Notes.model_validate(notes_input)
-    notes_db.owner_id = current_user.id
+    note_dict = notes_input.model_dump()
+    note_dict["owner_id"] = current_user.id
+
+    notes_db = Notes.model_validate(note_dict)
     
     session.add(notes_db)
     session.commit()

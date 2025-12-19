@@ -16,13 +16,12 @@ from dependencies import (
 # Lifespan: jalan otomatis saat server nyala
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    create_db_table() # perintah: "buat semua tabel yg di-import"
+    create_db_table()      # perintah: "buat semua tabel yg di-import"
     yield
 
 app = FastAPI(lifespan=lifespan)
 app.include_router(auth.router)
 app.include_router(notes.router)
-
 
 @app.get("/user", response_model=List[User])
 def read_all_user(

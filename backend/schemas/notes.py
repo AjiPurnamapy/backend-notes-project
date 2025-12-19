@@ -9,4 +9,4 @@ class CreateNotes(BaseNotes):
 
 class ReadNotes(BaseNotes):
     id:int
-    owner_id:int
+    owner_id: int
