@@ -4,8 +4,9 @@ from sqlmodel import SQLModel, create_engine, Session
 
 load_dotenv()
 
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 sqlite_file_name = "database.db"
-sqlite_url = os.getenv("DATABASE_URL")
+sqlite_url = f"sqlite:///{os.path.join(BASE_DIR, sqlite_file_name)}"
 
 if sqlite_url is None:
     sqlite_url = f"sqlite:///{sqlite_file_name}"
