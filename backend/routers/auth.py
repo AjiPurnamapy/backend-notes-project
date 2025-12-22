@@ -8,7 +8,7 @@ from dependencies import get_password_hash, verify_password, create_acces_token,
 
 router = APIRouter(tags=["Authentication"])
 
-@router.post("/user", response_model=UserRead)
+@router.post("/register", response_model=UserRead)
 def create_user(user_input: UserCreate, session: Session = Depends(get_session)):
     # validasi username
     existing_user = session.exec(select(User).where(User.name ==user_input.name)).first()

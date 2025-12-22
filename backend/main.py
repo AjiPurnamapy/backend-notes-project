@@ -24,6 +24,10 @@ app = FastAPI(lifespan=lifespan)
 app.include_router(auth.router)
 app.include_router(notes.router)
 
+@app.get("/")
+def read_root():
+    return {"message": "Hello World"}
+
 @app.exception_handler(Exception)
 async def global_exception_handler(request: Request, exc: Exception):
     # log error nya hanya bisa dilihat programer
