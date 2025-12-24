@@ -53,7 +53,7 @@ def read_all_user(
     return result
 
 
-@app.put("/user/{user_id}", response_model= BaseUser)
+@app.put("/user{user_id}", response_model= BaseUser)
 def update_user(user_id: int, new_data: User,
     session: Session = Depends(get_session),
 ):
@@ -80,7 +80,7 @@ def update_user(user_id: int, new_data: User,
     return user_db             # menampilkan data yg baru saja di ubah ke user
 
 
-@app.delete("/user/{user_id}")
+@app.delete("/user{user_id}")
 def delete_user(user_id: int, session: Session = Depends(get_session)):
     # masih sama, cari datanya
     user_db = session.get(User, user_id)
@@ -91,4 +91,4 @@ def delete_user(user_id: int, session: Session = Depends(get_session)):
     #hapus datanya
     session.delete(user_db) # menghapus data sesuai request (user) di database
     session.commit() # menyimpan perubahan
-    return {"messege": "data has deleted succsesfully "}
+    return {"message": "data has deleted succsesfully "}

@@ -8,7 +8,7 @@ class User(SQLModel, table=True):
     age      : int
     password : str
 
-class Notes(SQLModel, table=True):
+class Note(SQLModel, table=True):
     id: Optional[int] = Field(default=None, primary_key=True)
     title   : str
     content: str
