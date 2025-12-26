@@ -1,4 +1,5 @@
 import os
+import time
 from dotenv import load_dotenv
 from sqladmin import Admin, ModelView
 from sqladmin.authentication import AuthenticationBackend
@@ -11,7 +12,7 @@ USERNAME_ADMIN = os.getenv("USERNAME_ADMIN")
 PASSWORD_ADMIN = os.getenv("PASSWORD_ADMIN")
 TOKEN_ADMIN = os.getenv("TOKEN_ADMIN")
 SECRET_KEY_ADMIN = os.getenv("SECRET_KEY_ADMIN_SESSION")
-
+MAX_SESSION_TIME = 3600 
 # cek kelengkapan konfigurasi
 if not all([USERNAME_ADMIN, PASSWORD_ADMIN, TOKEN_ADMIN, SECRET_KEY_ADMIN]):
     raise ValueError ("Fatal Error Terjadi, Konfigurasi Di Admin Kurang lengkap ")
@@ -25,7 +26,10 @@ class AdminAuth(AuthenticationBackend):
         # validasi manual hardcode (bisa di ganti .env)
         if username == USERNAME_ADMIN and password == PASSWORD_ADMIN:
             # simpan tiket di session
-            request.session.update({"token": TOKEN_ADMIN})
+            request.session.update({
+                "token": TOKEN_ADMIN,
+                "login_time": time.time()
+                })
             return True
         return False
     
@@ -36,7 +40,19 @@ class AdminAuth(AuthenticationBackend):
     
     async def authenticate(self, request: Request) -> bool:
         token = request.session.get("token")
-        return bool (token)
+        login_time = request.session.get("login_time") 
+    
+        if not token or token != TOKEN_ADMIN:
+            return False
+        
+        if not login_time:
+            return False
+        
+        if time.time() - login_time > MAX_SESSION_TIME:
+            request.session.clear()
+            return False
+        
+        return True
     
 
 class UserAdmin(ModelView, model=User):
