@@ -28,12 +28,24 @@ async def lifespan(app: FastAPI):
     logger.info("🚀 Server Sedang Menyala...")
     # create_db_table()      # perintah: "buat semua tabel yg di-import"
     logger.info("🛑 Server dimatikan.")
-    yield 
+    yield
 
 app = FastAPI(
     title="Notes API Service",
-    description="API sederhana untuk menyimpan catatan pribadi dengan fitur login & register",
+    description="""
+    API Backend Untuk Aplikasi Manajemen Catatan Pribadi.
+
+    Fitur utama:
+    * 🔐 Auth JWT (Login & Register)
+    * 📝 CRUD Notes (Create, Read, Update, Delete)
+    * 📧 Email Notification (Background Task)
+    * 🛡️  Rate Limiter (Mencegah spam)
+    """,
     version="1.0.0",
+    contact={
+        "Name":"Aji Purnamapy",
+        "email":"ajipurnama798@gmail.com",
+    },
     lifespan=lifespan
 )
 
