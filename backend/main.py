@@ -79,7 +79,7 @@ def read_root():
 @app.exception_handler(Exception)
 async def global_exception_handler(request: Request, exc: Exception):
     # log error nya hanya bisa dilihat programer
-    print(f"FATAL ERROR TERJADI: {exc}")
+    logger.error (f"FATAL ERROR TERJADI: {exc}")
 
     # response ke user
     return JSONResponse(
